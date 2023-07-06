@@ -1,1 +1,9 @@
 // Заголовки, загальні БЕМ блоки та інше...
+.page {
+	position: relative;
+	&__main{
+		padding-top: 13.63rem;
+		padding-bottom: 11.5rem;
+	}
+}
+

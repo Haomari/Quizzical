@@ -1,3 +1,65 @@
 //====================================================================================================
+.main {
+
+  &__decoration {
+		position: absolute;
+
+    &_yellow {
+			top: 0;
+			right: 0;
+		}
+
+    &_blue {
+			bottom: 0;
+			left: 0;
+		}
+  }
+
+  &__container {}
+
+  &__title {
+    text-align: center;
+    font-family: Karla;
+    font-size: 1.95313rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    &:not(:last-child) {
+      padding-bottom: 0.44rem;
+    }
+  }
+
+  &__description {
+    text-align: center;
+    font-family: Inter;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    &:not(:last-child) {
+      padding-bottom: 1.81rem;
+    }
+  }
+
+  &__button {
+    display: block;
+    width: 12.0625rem;
+    height: 3.25rem;
+    margin: 0 auto;
+
+    border-radius: 0.9375rem;
+    background: #4D5B9E;
+
+    color: var(--text-accent);
+    text-align: center;
+    font-family: Inter;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
 
 //====================================================================================================
