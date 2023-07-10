@@ -13,41 +13,34 @@ export default function Quizzical() {
     axios
       .get("https://opentdb.com/api.php?amount=5&category=31&difficulty=easy")
       .then((response) => {
-				console.log(response.data.results)
+        console.log(response.data.results);
         setQuizzData(
           response.data.results.map((item) => {
             // Function to shuffle the array using the Fisher-Yates algorithm
             function shuffleArray(array) {
-							const newArray = [...array]; // Create a new array to avoid mutating the original array
-						
-							for (let i = newArray.length - 1; i > 0; i--) {
-								const j = Math.floor(Math.random() * (i + 1));
-								[newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Swap elements
-							}
-						
-							return newArray;
-						}
+              const newArray = [...array]; // Create a new array to avoid mutating the original array
 
+              for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Swap elements
+              }
+
+              return newArray;
+            }
 
             console.log(item.type);
-						console.log([
-							item.correct_answer,
-							...Object.values(item.incorrect_answers),
-						]);
 
-            const sortedAnswers =
-              item.type === "boolean"
-                ? false
-                : shuffleArray([
-                    item.correct_answer,
-                    ...Object.values(item.incorrect_answers),
-                  ]);
+            const sortedAnswers = shuffleArray([
+              item.correct_answer,
+              ...Object.values(item.incorrect_answers),
+            ]);
 
-
-						console.log(item.type === "boolean")
+            /* id: nanoid(),
+									isCorecct: item.correct_answer,
+									answear: false, */
             const newItem = {
               id: nanoid(),
-              question: item.question,
+              question: he.decode(item.question),
               type: item.type,
               correctAnswer: item.correct_answer,
               allAnswers:
@@ -59,50 +52,108 @@ export default function Quizzical() {
                         isCorecct:
                           answear === item.correct_answer ? true : false,
                         isSelect: false,
+												className: "",
                       };
                     })
-                  : "",
+                  : ["True", "False"].map((text) => {
+                      return {
+                        id: nanoid(),
+												className: "_boolean",
+                        text: he.decode(text),
+                        isSelect: false,
+                      };
+                    }),
             };
-						console.log(newItem)
+            console.log(newItem);
             return newItem;
           })
         );
-        console.log(response.data.results);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  return (
-    <div className="main__quizzical quizzical">
-      {/* {quizzData.map((item, index) => {
-        let qType =
-          item.type === "boolean"
-            ? false
-            : [item.correct_answer, ...Object.values(item.incorrect_answers)];
-        console.log(qType);
+  const handleSubmit = (event, checked) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    console.log(event);
+    console.log(checked);
+  };
 
-        // Function to shuffle the array using the Fisher-Yates algorithm
-        const shuffleArray = (array) => {
-          for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-          }
+  /*   const handleChange = (id) => {
+		console.log(id)
+		console.log(quizzData)
+    setQuizzData((prevQuizzData) =>
+      prevQuizzData.map((item) => {
+        return item.allAnswers.map((question) => {
+					console.log(question)
+          return { isSelect: id === question.id ? !question.isSelect : question.isSelect};
+        });
+      })
+    );
+  }; */
+
+  /* const handleChange = (id) => {
+    console.log(id);
+    console.log(quizzData);
+    setQuizzData((prevQuizzData) => {
+      return [
+        ...prevQuizzData,
+        prevQuizzData.map((item) => {
+          return {...item, allAnswers: item.allAnswers.map((question) => {
+						console.log(question)
+						return {...question, isSelect: id === question.id ? !question.isSelect : question.isSelect};
+					})}
+        }),
+      ];
+    });
+  }; */
+
+  const handleChange = (id) => {
+    console.log(id);
+    console.log(quizzData);
+    setQuizzData((prevQuizzData) => {
+      return prevQuizzData.map((item) => {
+        return {
+          ...item,
+          allAnswers: item.allAnswers.map((question) => {
+            console.log(question);
+            return {
+              ...question,
+              isSelect: id === question.id ? !question.isSelect : false,
+            };
+          }),
         };
-        qType && shuffleArray(qType);
-        console.log(item.question);
+      });
+    });
+  };
 
-        // he.decode(item.question) = Decode HTML entities within a string
+  /*   const handleChange = (id) => {
+    setQuizzData((prevQuizzData) => {
+      prevQuizzData.map(item);
+    });
+  }; */
+
+  console.log(quizzData);
+
+  return (
+    <form className="main__quizzical quizzical" onSubmit={handleSubmit}>
+      {quizzData.map((item, index) => {
         return (
           <Question
-            question={he.decode(item.question)}
+            question={item.question}
+            allAnswers={item.allAnswers}
+            id={item.id}
             key={index}
-            type={qType}
+            type={item.type}
+            handleChange={handleChange}
           />
         );
-      })} */}
-      {JSON.stringify(quizzData)}
-    </div>
+      })}
+      <button className="quizzical__button" type="submit">
+        Submit
+      </button>
+    </form>
   );
 }
