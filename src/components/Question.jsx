@@ -32,7 +32,7 @@ export default function Question(props) {
             >
               <input
                 checked={answear.isSelect}
-                onChange={() => props.handleChange(answear.id)}
+                onChange={() => props.handleChange(answear.id, props.id)}
                 className={`answears-quizzical__input`}
                 type="radio"
                 name="answer"

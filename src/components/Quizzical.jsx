@@ -6,7 +6,9 @@ import Question from "./Question";
 
 export default function Quizzical() {
   const [quizzData, setQuizzData] = useState([]);
-  const [sortedQuizzData, setsortedQuizzData] = useState(() => []);
+  const [amountOfCorrectAnswers, setAmountOfCorrectAnswers] = useState(0);
+  const [isEnd, setIsEnd] = useState(false);
+  const [triggerReload, setTriggerReload] = useState(false);
 
   console.log("run Q");
   useEffect(() => {
@@ -35,30 +37,30 @@ export default function Quizzical() {
               ...Object.values(item.incorrect_answers),
             ]);
 
-            /* id: nanoid(),
-									isCorecct: item.correct_answer,
-									answear: false, */
             const newItem = {
               id: nanoid(),
               question: he.decode(item.question),
               type: item.type,
-              correctAnswer: item.correct_answer,
+              correctAnswer: he.decode(item.correct_answer),
               allAnswers:
                 item.type !== "boolean"
                   ? sortedAnswers.map((answear) => {
                       return {
                         id: nanoid(),
-                        text: answear,
+                        text: he.decode(answear),
                         isCorecct:
                           answear === item.correct_answer ? true : false,
                         isSelect: false,
-												className: "",
+                        className: "",
                       };
                     })
                   : ["True", "False"].map((text) => {
+                      console.log(text);
+                      console.log(item.correct_answer);
                       return {
                         id: nanoid(),
-												className: "_boolean",
+                        className: "",
+                        isCorecct: item.correct_answer === text,
                         text: he.decode(text),
                         isSelect: false,
                       };
@@ -72,88 +74,89 @@ export default function Quizzical() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [triggerReload]);
 
-  const handleSubmit = (event, checked) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    console.log(event);
-    console.log(checked);
-  };
-
-  /*   const handleChange = (id) => {
-		console.log(id)
-		console.log(quizzData)
-    setQuizzData((prevQuizzData) =>
-      prevQuizzData.map((item) => {
-        return item.allAnswers.map((question) => {
-					console.log(question)
-          return { isSelect: id === question.id ? !question.isSelect : question.isSelect};
+  const handleSubmitOrReset = () => {
+    console.log("i");
+    if (isEnd) {
+      setAmountOfCorrectAnswers(0);
+      setTriggerReload((prevTriggerReload) => !prevTriggerReload);
+      setIsEnd((prevIsEnd) => !prevIsEnd);
+			setQuizzData([])
+    } else {
+      setIsEnd((prevIsEnd) => !prevIsEnd);
+      setQuizzData((prevQuizzData) => {
+        return prevQuizzData.map((item) => {
+          return {
+            ...item,
+            allAnswers: item.allAnswers.map((question) => {
+              if (question.isCorecct && question.isSelect) {
+                setAmountOfCorrectAnswers(
+                  (prevAmountOfCorrectAnswers) => prevAmountOfCorrectAnswers++
+                );
+              }
+              return {
+                ...question,
+                className:
+                  question.isCorecct && question.isSelect
+                    ? "_corecct"
+                    : question.isCorecct
+                    ? "_corecct"
+                    : question.isSelect
+                    ? "_incorect"
+                    : "",
+                isSelect: false,
+              };
+            }),
+          };
         });
-      })
-    );
-  }; */
-
-  /* const handleChange = (id) => {
-    console.log(id);
-    console.log(quizzData);
-    setQuizzData((prevQuizzData) => {
-      return [
-        ...prevQuizzData,
-        prevQuizzData.map((item) => {
-          return {...item, allAnswers: item.allAnswers.map((question) => {
-						console.log(question)
-						return {...question, isSelect: id === question.id ? !question.isSelect : question.isSelect};
-					})}
-        }),
-      ];
-    });
-  }; */
-
-  const handleChange = (id) => {
-    console.log(id);
-    console.log(quizzData);
-    setQuizzData((prevQuizzData) => {
-      return prevQuizzData.map((item) => {
-        return {
-          ...item,
-          allAnswers: item.allAnswers.map((question) => {
-            console.log(question);
-            return {
-              ...question,
-              isSelect: id === question.id ? !question.isSelect : false,
-            };
-          }),
-        };
       });
-    });
+    }
   };
 
-  /*   const handleChange = (id) => {
-    setQuizzData((prevQuizzData) => {
-      prevQuizzData.map(item);
-    });
-  }; */
+  const handleChange = (id, itemId) => {
+    if (!isEnd) {
+      setQuizzData((prevQuizzData) => {
+        return prevQuizzData.map((item) => {
+          return itemId === item.id
+            ? {
+                ...item,
+                allAnswers: item.allAnswers.map((question) => {
+                  console.log(question);
+                  return {
+                    ...question,
+                    isSelect: id === question.id ? !question.isSelect : false,
+                  };
+                }),
+              }
+            : { ...item };
+        });
+      });
+    }
+  };
 
   console.log(quizzData);
 
   return (
-    <form className="main__quizzical quizzical" onSubmit={handleSubmit}>
-      {quizzData.map((item, index) => {
-        return (
-          <Question
-            question={item.question}
-            allAnswers={item.allAnswers}
-            id={item.id}
-            key={index}
-            type={item.type}
-            handleChange={handleChange}
-          />
-        );
-      })}
-      <button className="quizzical__button" type="submit">
-        Submit
-      </button>
-    </form>
+    quizzData &&
+    quizzData.length > 0 && (
+      <div className="main__quizzical quizzical">
+        {quizzData.map((item, index) => {
+          return (
+            <Question
+              question={item.question}
+              allAnswers={item.allAnswers}
+              id={item.id}
+              key={index}
+              type={item.type}
+              handleChange={handleChange}
+            />
+          );
+        })}
+        <button onClick={handleSubmitOrReset} className="quizzical__button">
+          Check answers
+        </button>
+      </div>
+    )
   );
 }
