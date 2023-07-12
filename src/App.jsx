@@ -3,6 +3,7 @@ import Quizzical from "./components/Quizzical";
 
 function App() {
   const [isStartScreen, setIsStartScreen] = useState(true);
+	const [difficultOfQuizzical, setDifficultOfQuizzical] = useState("ease")
 
   const toggleIsStartScreen = () => {
     setIsStartScreen((prevIsStartScreen) => !prevIsStartScreen);
@@ -49,6 +50,18 @@ function App() {
             <>
               <h2 className="main__title">Quizzical</h2>
               <p className="main__description">Some description if needed</p>
+              <label className="select__title ">
+                <select
+								className="main__select select"
+                  value={difficultOfQuizzical}
+                  onChange={(e) => setDifficultOfQuizzical(e.target.value)}
+                >
+                  <option className="select__value" value="easy">Easy</option>
+                  <option className="select__value" value="medium">Medium</option>
+                  <option className="select__value" value="hard">Hard</option>
+                </select>
+								peak the difficult
+              </label>
               <button
                 onClick={toggleIsStartScreen}
                 type="button"
@@ -58,8 +71,10 @@ function App() {
               </button>
             </>
           ) : (
-            <Quizzical />
-          )} 
+            <Quizzical 
+						difficultOfQuizzical={difficultOfQuizzical}
+						/>
+          )}
         </div>
       </section>
     </main>

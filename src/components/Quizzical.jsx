@@ -4,16 +4,17 @@ import he from "he";
 import { nanoid } from "nanoid";
 import Question from "./Question";
 
-export default function Quizzical() {
+export default function Quizzical(props) {
   const [quizzData, setQuizzData] = useState([]);
   const [amountOfCorrectAnswers, setAmountOfCorrectAnswers] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [triggerReload, setTriggerReload] = useState(false);
 
-  console.log("run Q");
+
+  console.log(props.difficultOfQuizzical);
   useEffect(() => {
     axios
-      .get("https://opentdb.com/api.php?amount=5&category=31&difficulty=easy")
+      .get(`https://opentdb.com/api.php?amount=5&category=31&difficulty=${props.difficultOfQuizzical}`)
       .then((response) => {
         console.log(response.data.results);
         setQuizzData(
@@ -82,7 +83,7 @@ export default function Quizzical() {
       setAmountOfCorrectAnswers(0);
       setTriggerReload((prevTriggerReload) => !prevTriggerReload);
       setIsEnd((prevIsEnd) => !prevIsEnd);
-			setQuizzData([])
+      setQuizzData([]);
     } else {
       setIsEnd((prevIsEnd) => !prevIsEnd);
       setQuizzData((prevQuizzData) => {
@@ -92,7 +93,7 @@ export default function Quizzical() {
             allAnswers: item.allAnswers.map((question) => {
               if (question.isCorecct && question.isSelect) {
                 setAmountOfCorrectAnswers(
-                  (prevAmountOfCorrectAnswers) => prevAmountOfCorrectAnswers++
+                  (prevAmountOfCorrectAnswers) => prevAmountOfCorrectAnswers + 1
                 );
               }
               return {
@@ -101,7 +102,7 @@ export default function Quizzical() {
                   question.isCorecct && question.isSelect
                     ? "_corecct"
                     : question.isCorecct
-                    ? "_corecct"
+                    ? "_corecct-not-select"
                     : question.isSelect
                     ? "_incorect"
                     : "",
@@ -129,7 +130,9 @@ export default function Quizzical() {
                   };
                 }),
               }
-            : { ...item };
+            : {
+                ...item,
+              };
         });
       });
     }
@@ -153,9 +156,21 @@ export default function Quizzical() {
             />
           );
         })}
-        <button onClick={handleSubmitOrReset} className="quizzical__button">
-          Check answers
-        </button>
+        {isEnd ? (
+          <div className="quizzical__bottom-body">
+            <p className="quizzical__bottom-text">
+              You scored {amountOfCorrectAnswers}/5 correct answers
+            </p>
+            <button
+              onClick={handleSubmitOrReset}
+              className="quizzical__bottom-button"
+            >Play again</button>
+          </div>
+        ) : (
+          <button onClick={handleSubmitOrReset} className="quizzical__button">
+            Check answers
+          </button>
+        )}
       </div>
     )
   );
