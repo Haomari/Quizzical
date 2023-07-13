@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import Quizzical from "./components/Quizzical";
+import Select from "react-select";
 
 function App() {
   const [isStartScreen, setIsStartScreen] = useState(true);
-	const [difficultOfQuizzical, setDifficultOfQuizzical] = useState("ease")
+  const [difficultOfQuizzical, setDifficultOfQuizzical] = useState("");
 
   const toggleIsStartScreen = () => {
-    setIsStartScreen((prevIsStartScreen) => !prevIsStartScreen);
-    console.log(isStartScreen);
+		console.log(difficultOfQuizzical)
+    if (difficultOfQuizzical.length > 0) {
+      setIsStartScreen((prevIsStartScreen) => !prevIsStartScreen);
+      console.log(isStartScreen);
+    } else {
+			alert("Please chouse difficult")
+		}
   };
+
+  const selectOptions = [
+    { value: "easy", label: "Easy" },
+    { value: "medium", label: "Medium" },
+    { value: "hard", label: "Hard" },
+  ];
 
   console.log("run A");
 
@@ -50,18 +62,16 @@ function App() {
             <>
               <h2 className="main__title">Quizzical</h2>
               <p className="main__description">Some description if needed</p>
-              <label className="select__title ">
-                <select
-								className="main__select select"
-                  value={difficultOfQuizzical}
-                  onChange={(e) => setDifficultOfQuizzical(e.target.value)}
-                >
-                  <option className="select__value" value="easy">Easy</option>
-                  <option className="select__value" value="medium">Medium</option>
-                  <option className="select__value" value="hard">Hard</option>
-                </select>
-								peak the difficult
-              </label>
+              <Select
+                options={selectOptions}
+                onChange={(e) => setDifficultOfQuizzical(e.value)}
+                className="main__select select-main"
+                placeholder="Select difficult"
+                classNamePrefix="select-main"
+                isSearchable={false}
+                // defaultMenuIsOpen
+              />
+							<input type="number" className="main__text-input input"/>
               <button
                 onClick={toggleIsStartScreen}
                 type="button"
@@ -71,9 +81,7 @@ function App() {
               </button>
             </>
           ) : (
-            <Quizzical 
-						difficultOfQuizzical={difficultOfQuizzical}
-						/>
+            <Quizzical difficultOfQuizzical={difficultOfQuizzical} />
           )}
         </div>
       </section>

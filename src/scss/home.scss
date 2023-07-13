@@ -43,6 +43,10 @@
     }
   }
 
+  &__select {
+    padding-bottom: 1rem;
+  }
+
   &__button {
     display: block;
     width: 12.0625rem;
@@ -73,7 +77,8 @@
 
   &__answears {}
 
-  &__button, &__bottom-button {
+  &__button,
+  &__bottom-button {
     display: block;
     padding: 0.65rem 1.35rem;
     background-color: #4D5B9E;
@@ -102,21 +107,17 @@
     }
   }
 
-	&__bottom-body {
-		display: flex;
-		justify-content: space-evenly;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 1rem;
-	}
+  &__bottom-body {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
 
-	&__bottom-button {
-		
-	}
+  &__bottom-button {}
 
-	&__bottom-text {
-
-	}
+  &__bottom-text {}
 }
 
 .answears-quizzical {
@@ -157,17 +158,18 @@
       border: 0.794px solid #94D7A2;
     }
 
-		&._incorect {
-			background: #F8BCBC;
+    &._incorect {
+      background: #F8BCBC;
       border: 0.794px solid #F8BCBC;
     }
 
-		&._corecct-not-select {
-			background: #caffd4;
+    &._corecct-not-select {
+      background: #caffd4;
       border: 0.794px solid #caffd4;
     }
   }
 
   &__input {}
 }
+
 //====================================================================================================
