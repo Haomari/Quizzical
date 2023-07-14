@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import Quizzical from "./components/Quizzical";
 import Select from "react-select";
+import InputNumber from "rc-input-number";
 
 function App() {
   const [isStartScreen, setIsStartScreen] = useState(true);
   const [difficultOfQuizzical, setDifficultOfQuizzical] = useState("");
+  const [amountOfAnswers, setAmountOfAnswers] = useState(5);
 
   const toggleIsStartScreen = () => {
-		console.log(difficultOfQuizzical)
-    if (difficultOfQuizzical.length > 0) {
+    if (difficultOfQuizzical.length > 0 && amountOfAnswers) {
       setIsStartScreen((prevIsStartScreen) => !prevIsStartScreen);
-      console.log(isStartScreen);
     } else {
-			alert("Please chouse difficult")
-		}
+      alert("Please chouse difficult and enter amount of questions");
+    }
   };
 
   const selectOptions = [
@@ -22,7 +22,6 @@ function App() {
     { value: "hard", label: "Hard" },
   ];
 
-  console.log("run A");
 
   return (
     <main className="page">
@@ -69,9 +68,18 @@ function App() {
                 placeholder="Select difficult"
                 classNamePrefix="select-main"
                 isSearchable={false}
-                // defaultMenuIsOpen
               />
-							<input type="number" className="main__text-input input"/>
+							<h3 className="main__input-number_label">Enter amount of questions</h3>
+              <InputNumber
+								value={amountOfAnswers}
+                type="number"
+                prefixCls={"main__input-number"}
+                defaultValue={5}
+                min={1}
+                max={50}
+								required={true}
+                onChange={(e) => setAmountOfAnswers(e)}
+              />
               <button
                 onClick={toggleIsStartScreen}
                 type="button"
@@ -81,7 +89,10 @@ function App() {
               </button>
             </>
           ) : (
-            <Quizzical difficultOfQuizzical={difficultOfQuizzical} />
+            <Quizzical
+              difficultOfQuizzical={difficultOfQuizzical}
+              amountOfAnswers={amountOfAnswers}
+            />
           )}
         </div>
       </section>

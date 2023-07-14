@@ -11,12 +11,10 @@ export default function Quizzical(props) {
   const [triggerReload, setTriggerReload] = useState(false);
 
 
-  console.log(props.difficultOfQuizzical);
   useEffect(() => {
     axios
-      .get(`https://opentdb.com/api.php?amount=5&category=31&difficulty=${props.difficultOfQuizzical}`)
+      .get(`https://opentdb.com/api.php?amount=${props.amountOfAnswers}&category=31&difficulty=${props.difficultOfQuizzical}`)
       .then((response) => {
-        console.log(response.data.results);
         setQuizzData(
           response.data.results.map((item) => {
             // Function to shuffle the array using the Fisher-Yates algorithm
@@ -30,8 +28,6 @@ export default function Quizzical(props) {
 
               return newArray;
             }
-
-            console.log(item.type);
 
             const sortedAnswers = shuffleArray([
               item.correct_answer,
@@ -56,8 +52,6 @@ export default function Quizzical(props) {
                       };
                     })
                   : ["True", "False"].map((text) => {
-                      console.log(text);
-                      console.log(item.correct_answer);
                       return {
                         id: nanoid(),
                         className: "",
@@ -67,7 +61,6 @@ export default function Quizzical(props) {
                       };
                     }),
             };
-            console.log(newItem);
             return newItem;
           })
         );
@@ -78,7 +71,6 @@ export default function Quizzical(props) {
   }, [triggerReload]);
 
   const handleSubmitOrReset = () => {
-    console.log("i");
     if (isEnd) {
       setAmountOfCorrectAnswers(0);
       setTriggerReload((prevTriggerReload) => !prevTriggerReload);
@@ -123,7 +115,6 @@ export default function Quizzical(props) {
             ? {
                 ...item,
                 allAnswers: item.allAnswers.map((question) => {
-                  console.log(question);
                   return {
                     ...question,
                     isSelect: id === question.id ? !question.isSelect : false,
@@ -138,7 +129,6 @@ export default function Quizzical(props) {
     }
   };
 
-  console.log(quizzData);
 
   return (
     quizzData &&
@@ -159,7 +149,7 @@ export default function Quizzical(props) {
         {isEnd ? (
           <div className="quizzical__bottom-body">
             <p className="quizzical__bottom-text">
-              You scored {amountOfCorrectAnswers}/5 correct answers
+              You scored {amountOfCorrectAnswers}/{props.amountOfAnswers} correct answers
             </p>
             <button
               onClick={handleSubmitOrReset}

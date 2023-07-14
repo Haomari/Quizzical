@@ -35,11 +35,16 @@ body {
 }
 input,
 button,
-textarea {
+textarea,
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
 	font-family: $fontFamily;
 	font-size: inherit;
 	line-height: inherit;
+	appearance: none;
 }
+
+
 button {
 	cursor: pointer;
 	color: inherit;
