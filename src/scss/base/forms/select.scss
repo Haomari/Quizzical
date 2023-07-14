@@ -15,7 +15,6 @@
 
 		&--is-focused {
 			box-shadow: none !important;
-			border-color: hsl(0, 0%, 80%);
 		}
 
 		&:hover {
@@ -29,12 +28,6 @@
 
   &__menu {
     top: 1.95rem !important;
-    // bottom: 1rem !important;
-  }
-
-  &__menu-list {
-    // top: 0 !important;
-    // bottom: 1rem !important;
   }
 
   &__indicators {

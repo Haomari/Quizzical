@@ -4,28 +4,31 @@ import Select from "react-select";
 import InputNumber from "rc-input-number";
 
 function App() {
+  // State variables
   const [isStartScreen, setIsStartScreen] = useState(true);
   const [difficultOfQuizzical, setDifficultOfQuizzical] = useState("");
   const [amountOfAnswers, setAmountOfAnswers] = useState(5);
 
+  // Function to toggle the start screen
   const toggleIsStartScreen = () => {
     if (difficultOfQuizzical.length > 0 && amountOfAnswers) {
       setIsStartScreen((prevIsStartScreen) => !prevIsStartScreen);
     } else {
-      alert("Please chouse difficult and enter amount of questions");
+      alert("Please choose difficulty and enter the number of questions");
     }
   };
 
+  // Options for the difficulty select
   const selectOptions = [
     { value: "easy", label: "Easy" },
     { value: "medium", label: "Medium" },
     { value: "hard", label: "Hard" },
   ];
 
-
   return (
     <main className="page">
       <section className="page__main main">
+        {/* Yellow decoration */}
         <svg
           className="main__decoration main__decoration_yellow"
           xmlns="http://www.w3.org/2000/svg"
@@ -41,6 +44,8 @@ function App() {
             fill="#FFFAD1"
           />
         </svg>
+
+        {/* Blue decoration */}
         <svg
           className="main__decoration main__decoration_blue"
           xmlns="http://www.w3.org/2000/svg"
@@ -56,30 +61,41 @@ function App() {
             fill="#DEEBF8"
           />
         </svg>
+
         <div className="main__container">
           {isStartScreen ? (
+            // Start screen
             <>
               <h2 className="main__title">Quizzical</h2>
-              <p className="main__description">Some description if needed</p>
+              <p className="main__description">Anime quiz</p>
+
+              {/* Difficulty select */}
               <Select
                 options={selectOptions}
                 onChange={(e) => setDifficultOfQuizzical(e.value)}
                 className="main__select select-main"
-                placeholder="Select difficult"
+                placeholder="Select difficulty"
                 classNamePrefix="select-main"
                 isSearchable={false}
               />
-							<h3 className="main__input-number_label">Enter amount of questions</h3>
+
+              <h3 className="main__input-number_label">
+                Enter the number of questions<span>(1 - 50)</span>
+              </h3>
+
+              {/* Number input for the amount of questions */}
               <InputNumber
-								value={amountOfAnswers}
+                value={amountOfAnswers}
                 type="number"
                 prefixCls={"main__input-number"}
                 defaultValue={5}
                 min={1}
                 max={50}
-								required={true}
+                required={true}
                 onChange={(e) => setAmountOfAnswers(e)}
               />
+
+              {/* Start quiz button */}
               <button
                 onClick={toggleIsStartScreen}
                 type="button"
@@ -89,6 +105,7 @@ function App() {
               </button>
             </>
           ) : (
+            // Quiz component
             <Quizzical
               difficultOfQuizzical={difficultOfQuizzical}
               amountOfAnswers={amountOfAnswers}

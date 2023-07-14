@@ -1,16 +1,22 @@
-
 export default function Question(props) {
   return (
     <div id={props.id} className="quizzical__item">
       <div className="quizzical__question">
+        {/* Render the question */}
         <p>{props.question}</p>
       </div>
       <div className="quizzical__answears answears-quizzical">
+        {/* Render the answer options */}
         {props.allAnswers.map((answear, index) => {
           return (
             <label
               key={index}
-              className={`${answear.className} ${answear.isSelect && "_select"} answears-quizzical__label`}
+              className={`
+								${answear.className} 
+								${answear.isSelect && "_select"} 
+								${props.isEnd && "_end"}
+								answears-quizzical__label`
+							}
               htmlFor={answear.id}
             >
               <input

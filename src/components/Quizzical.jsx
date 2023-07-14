@@ -5,15 +5,18 @@ import { nanoid } from "nanoid";
 import Question from "./Question";
 
 export default function Quizzical(props) {
+  // State variables
   const [quizzData, setQuizzData] = useState([]);
   const [amountOfCorrectAnswers, setAmountOfCorrectAnswers] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [triggerReload, setTriggerReload] = useState(false);
 
-
   useEffect(() => {
+    // Fetch quiz data from API when component mounts or triggerReload changes
     axios
-      .get(`https://opentdb.com/api.php?amount=${props.amountOfAnswers}&category=31&difficulty=${props.difficultOfQuizzical}`)
+      .get(
+        `https://opentdb.com/api.php?amount=${props.amountOfAnswers}&category=31&difficulty=${props.difficultOfQuizzical}`
+      )
       .then((response) => {
         setQuizzData(
           response.data.results.map((item) => {
@@ -72,11 +75,13 @@ export default function Quizzical(props) {
 
   const handleSubmitOrReset = () => {
     if (isEnd) {
+      // Reset quiz if it is already ended
       setAmountOfCorrectAnswers(0);
       setTriggerReload((prevTriggerReload) => !prevTriggerReload);
       setIsEnd((prevIsEnd) => !prevIsEnd);
       setQuizzData([]);
     } else {
+      // Check answers and end the quiz
       setIsEnd((prevIsEnd) => !prevIsEnd);
       setQuizzData((prevQuizzData) => {
         return prevQuizzData.map((item) => {
@@ -109,6 +114,7 @@ export default function Quizzical(props) {
 
   const handleChange = (id, itemId) => {
     if (!isEnd) {
+      // Update the selected answer for a question
       setQuizzData((prevQuizzData) => {
         return prevQuizzData.map((item) => {
           return itemId === item.id
@@ -129,8 +135,8 @@ export default function Quizzical(props) {
     }
   };
 
-
   return (
+    // Render quiz data if available
     quizzData &&
     quizzData.length > 0 && (
       <div className="main__quizzical quizzical">
@@ -143,10 +149,12 @@ export default function Quizzical(props) {
               key={index}
               type={item.type}
               handleChange={handleChange}
+							isEnd={isEnd}
             />
           );
         })}
         {isEnd ? (
+          // Render the result and play again button if the quiz has ended
           <div className="quizzical__bottom-body">
             <p className="quizzical__bottom-text">
               You scored {amountOfCorrectAnswers}/{props.amountOfAnswers} correct answers
@@ -154,9 +162,12 @@ export default function Quizzical(props) {
             <button
               onClick={handleSubmitOrReset}
               className="quizzical__bottom-button"
-            >Play again</button>
+            >
+              Play again
+            </button>
           </div>
         ) : (
+          // Render the check answers button if the quiz is still in progress
           <button onClick={handleSubmitOrReset} className="quizzical__button">
             Check answers
           </button>

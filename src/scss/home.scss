@@ -15,8 +15,6 @@
     }
   }
 
-  &__container {}
-
   &__title {
     text-align: center;
     font-family: Karla;
@@ -43,32 +41,44 @@
     }
   }
 
-	&__input-number {
-		padding-bottom: 1rem;
+  &__input-number {
+    padding-bottom: 1rem;
+		user-select: none;
 
-		&_label {
-			text-align: center;
-			font-family: Inter;
-			font-size: 1rem;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
-			padding-bottom: 0.1rem;
+    &_label {
+      text-align: center;
+      font-family: Inter;
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      padding-bottom: 0.1rem;
+
+			& span {
+				font-weight: 600;
+			}
+    }
+
+		&-focused{
+			& .main__input-number-input-wrap {
+				border-color: var(--focus-blue);
+        width: 10rem;
+			}
 		}
-	}
+  }
 
-	&__input-number-input-wrap {
-		margin: 0 auto;
-		max-width: 10rem;
-		width: 4rem;
-		border: 1px solid #000;
+  &__input-number-input-wrap {
+    margin: 0 auto;
+    max-width: 10rem;
+    width: 4rem;
+    border: 1px solid var(--black);
     align-items: center;
     cursor: default;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     min-height: 38px;
-    outline: 0!important;
+    outline: 0 !important;
     position: relative;
     transition: all 300ms;
     background-color: hsl(0, 0%, 100%);
@@ -78,24 +88,19 @@
     border-width: 1px;
     box-sizing: border-box;
 
-		@media (any-hover: hover){
-			&:hover{
-				box-shadow: 0 0 0 rem(1) var(--bg-accent) ;
-			}
+    @media (any-hover: hover) {
+      &:hover {
+        box-shadow: 0 0 0 rem(1) var(--bg-accent);
+      }
+    }
 
-			&:focus-within{
-				border-color: #2684FF;
-				width: 10rem;
-			}
-		}
-
-		& input {
-			// border: 1px solid #000;
-			text-align: center;
-			padding: 0 1rem;
-			width: 100%;
-		}
-	}
+    & input {
+      text-align: center;
+      padding: 0 1rem;
+      width: 100%;
+			user-select: text;
+    }
+  }
 
 
 
@@ -104,6 +109,7 @@
   }
 
   &__button {
+		position: relative;
     display: block;
     width: 12.0625rem;
     height: 3.25rem;
@@ -119,48 +125,76 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+
+		&::before{
+			content:'';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 0.9375rem;
+			right: 0;
+			top: 0;
+			background-color: #ffffff00;
+			transition: all 0.3s;
+		}
+		@media (any-hover: hover){
+			&:hover{
+				&::before{
+					background-color: var(--hover-button);
+				}
+			}
+		}
   }
 }
 
-input {
-	// border: 1px solid #000;
-	padding: 0 1rem;
-	width: 100%;
-	&:focus + .main__input-number-input-wrap {
-		border-color: #2684FF;
-	}
-}
 
 .quizzical {
   &__item {
     &:not(:last-child) {
       padding-bottom: 1rem;
       margin-bottom: 1rem;
-      border-bottom: 0.04963rem solid #DBDEF0;
+      border-bottom: 0.04963rem solid var(--border-gray);
     }
   }
 
-  &__answears {}
-
   &__button,
   &__bottom-button {
+		position: relative;
     display: block;
     padding: 0.65rem 1.35rem;
     background-color: var(--bg-accent);
     margin: 0 auto;
     border-radius: 0.9375rem;
 
-    color: #F5F7FB;
+    color: var(--text-accent);
     text-align: center;
     font-family: Inter;
     font-size: 0.64rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+		&::before{
+			content:'';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 0.9375rem;
+			right: 0;
+			top: 0;
+			background-color: #ffffff00;
+			transition: all 0.3s;
+		}
+		@media (any-hover: hover){
+			&:hover{
+				&::before{
+					background-color: var(--hover-button);
+				}
+			}
+		}
   }
 
   &__question {
-    color: #293264;
+    color: var(--primary);
     font-family: Karla;
     font-size: 16px;
     font-style: normal;
@@ -180,9 +214,13 @@ input {
     gap: 1rem;
   }
 
-  &__bottom-button {}
-
-  &__bottom-text {}
+  &__bottom-text {
+    font-family: Inter;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
 }
 
 .answears-quizzical {
@@ -198,7 +236,8 @@ input {
 
   &__label {
     cursor: pointer;
-    color: #293264;
+		position: relative;
+    color: var(--var());
     text-align: center;
     font-family: Inter;
     font-size: 0.64rem;
@@ -214,27 +253,56 @@ input {
     transition: all 0.3s;
 
     &._select {
-      background: #D6DBF5;
-      border: 0.794px solid #D6DBF5;
+      background: var(--input-select);
+      border: 0.794px solid var(--input-select);
     }
 
     &._corecct {
-      background: #94D7A2;
-      border: 0.794px solid #94D7A2;
+      background: var(--input-corecct);
+      border: 0.794px solid var(--input-corecct);
     }
 
     &._incorect {
-      background: #F8BCBC;
-      border: 0.794px solid #F8BCBC;
+      background: var(--input-incorect);
+      border: 0.794px solid var(--input-incorect);
     }
 
     &._corecct-not-select {
-      background: #caffd4;
-      border: 0.794px solid #caffd4;
+      background: var(--input-corecct-not-select);
+      border: 0.794px solid var(--input-corecct-not-select);
     }
-  }
 
-  &__input {}
+		&::before{
+			content:'';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 0.9375rem;
+			right: 0;
+			top: 0;
+			background-color: transparent;
+			transition: all 0.3s;
+		}
+		@media (any-hover: hover){
+			&:hover{
+				&::before{
+					background-color: var(--hover-button);
+				}
+			}
+		}
+
+		&._end {
+			cursor: default;
+			user-select: text;
+			@media (any-hover: hover){
+				&:hover{
+					&::before{
+						background-color: transparent;
+					}
+				}
+			}
+		}
+  }
 }
 
 //====================================================================================================
