@@ -14,7 +14,7 @@ Project is uses:
 * [nanoid](https://www.npmjs.com/package/nanoid)
 * [axios](https://www.npmjs.com/package/axios)
 * [react-select](https://www.npmjs.com/package/react-select)
-* [rc-input-number](https://www.npmjs.com/package/rc-input-number])
+* [rc-input-number](https://www.npmjs.com/package/rc-input-number)
 
 ## Hosting
 [http://quizzical.rf.gd/](http://quizzical.rf.gd/)
