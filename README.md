@@ -1,7 +1,5 @@
 # Quizzical
-
-## General info
-Quiz about anime written with react
+Quiz app written with react
 
 ## Technologies
 Project is uses:
